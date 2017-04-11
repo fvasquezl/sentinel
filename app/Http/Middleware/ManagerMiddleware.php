@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Closure;
 
-class VisitorsMiddleware
+class ManagerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class VisitorsMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Sentinel::check())
+        if(Sentinel::check() && Sentinel::getUser()->roles()->first()->slug=='manager')
             return $next($request);
         else
             return redirect('/');
